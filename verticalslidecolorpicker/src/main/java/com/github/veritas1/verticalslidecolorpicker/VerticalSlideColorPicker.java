@@ -11,7 +11,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -92,8 +91,6 @@ public class VerticalSlideColorPicker extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
-		long startTime = System.currentTimeMillis();
-
 		path.addCircle(centerX, borderWidth + colorPickerRadius, colorPickerRadius, Path.Direction.CW);
 		path.addRect(colorPickerBody, Path.Direction.CW);
 		path.addCircle(centerX, viewHeight - (borderWidth + colorPickerRadius), colorPickerRadius, Path.Direction.CW);
@@ -108,14 +105,10 @@ public class VerticalSlideColorPicker extends View {
 		} else {
 			canvas.drawLine(colorPickerBody.left, selectorYPos, colorPickerBody.right, selectorYPos, strokePaint);
 		}
-
-		Log.d("mark1", "Time in onDraw: " + (System.currentTimeMillis() - startTime));
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-
-		long startTime = System.currentTimeMillis();
 
 		float yPos = Math.min(event.getY(), colorPickerBody.bottom);
 		yPos = Math.max(colorPickerBody.top, yPos);
@@ -128,8 +121,6 @@ public class VerticalSlideColorPicker extends View {
 		}
 
 		invalidate();
-
-		Log.d("mark1", "Time in onTouchEvent: " + (System.currentTimeMillis() - startTime));
 
 		return true;
 	}
