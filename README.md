@@ -5,7 +5,7 @@
 ## Example usage
 
 layout.xml
-```	
+```XML
 <com.github.veritas1.verticalslidecolorpicker.VerticalSlideColorPicker
 		android:id="@+id/color_picker"
 		android:layout_width="30dp"
@@ -16,7 +16,7 @@ layout.xml
 ```
 
 Activity.java
-```
+```Java
 final VerticalSlideColorPicker colorPicker = (VerticalSlideColorPicker) findViewById(R.id.color_picker);
 final View selectedColorView = findViewById(R.id.selected_color);
 
@@ -29,7 +29,7 @@ colorPicker.setOnColorChangeListener(new VerticalSlideColorPicker.OnColorChangeL
 ```
 ## Add to project
 Add it in your root build.gradle at the end of repositories:
-```
+```Groovy
 allprojects {
 	repositories {
 		...
@@ -37,12 +37,8 @@ allprojects {
 	}
 }
 ```
-```
+```Groovy
 dependencies {
-	compile 'com.github.veritas1:verticalslidecolorpicker:$VERSION' // Check revision history
-	// OR
-	compile 'com.github.veritas1:verticalslidecolorpicker:master-SNAPSHOT'
+	compile 'com.github.veritas1:verticalslidecolorpicker:$VERSION' // Check releases
 }
 ```
-## Revision History
-* 1.0.0 - Initial release
