@@ -110,17 +110,26 @@ public class VerticalSlideColorPicker extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
-		float yPos = Math.min(event.getY(), colorPickerBody.bottom);
-		yPos = Math.max(colorPickerBody.top, yPos);
+		try
+		{
+			float yPos = Math.min(event.getY(), colorPickerBody.bottom);
+			yPos = Math.max(colorPickerBody.top, yPos);
 
-		selectorYPos = yPos;
-		int selectedColor = bitmap.getPixel(viewWidth/2, (int) selectorYPos);
+			selectorYPos = yPos;
+			int selectedColor = bitmap.getPixel(viewWidth/2, (int) selectorYPos);
 
-		if (onColorChangeListener != null) {
-			onColorChangeListener.onColorChange(selectedColor);
+			if (onColorChangeListener != null) {
+				onColorChangeListener.onColorChange(selectedColor);
+			}
+
+			invalidate();
 		}
-
-		invalidate();
+		catch(Exception e)
+		{
+			 e.printStackTrace();
+		}
+		
+		
 
 		return true;
 	}
