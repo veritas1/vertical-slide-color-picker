@@ -17,7 +17,6 @@ import android.view.View;
 /**
  * Created by Mark on 11/08/2016.
  */
-
 public class VerticalSlideColorPicker extends View {
 
 	private Paint paint;
@@ -35,8 +34,9 @@ public class VerticalSlideColorPicker extends View {
 	private float borderWidth;
 	private int[] colors;
 	private boolean cacheBitmap = true;
+    private int selectedColor ;
 
-	public VerticalSlideColorPicker(Context context) {
+    public VerticalSlideColorPicker(Context context) {
 		super(context);
 		init();
 	}
@@ -64,6 +64,7 @@ public class VerticalSlideColorPicker extends View {
 		init();
 	}
 
+	@SuppressLint("NewApi")
 	public VerticalSlideColorPicker(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init();
@@ -99,10 +100,14 @@ public class VerticalSlideColorPicker extends View {
 		canvas.drawPath(path, paint);
 
 		if (cacheBitmap) {
+
 			bitmap = getDrawingCache();
+			getPixel();
 			cacheBitmap = false;
 			invalidate();
-		} else {
+
+		}
+		else {
 			canvas.drawLine(colorPickerBody.left, selectorYPos, colorPickerBody.right, selectorYPos, strokePaint);
 		}
 	}
@@ -110,31 +115,42 @@ public class VerticalSlideColorPicker extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
+
 		try
 		{
 			float yPos = Math.min(event.getY(), colorPickerBody.bottom);
 			yPos = Math.max(colorPickerBody.top, yPos);
 
 			selectorYPos = yPos;
-			int selectedColor = bitmap.getPixel(viewWidth/2, (int) selectorYPos);
+			if(!bitmap.isRecycled())
+            {
+               getPixel();
+            }
+            else
+            {
+                bitmap = getDrawingCache();
+                getPixel();
 
-			if (onColorChangeListener != null) {
-				onColorChangeListener.onColorChange(selectedColor);
-			}
+            }
 
-			invalidate();
 		}
 		catch(Exception e)
 		{
 			 e.printStackTrace();
 		}
-		
-		
-
 		return true;
 	}
 
-	@Override
+    private void getPixel() {
+        selectedColor = bitmap.getPixel(viewWidth/2, (int) selectorYPos);
+        if (onColorChangeListener != null) {
+            onColorChangeListener.onColorChange(selectedColor);
+        }
+
+        invalidate();
+    }
+
+    @Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 
@@ -182,8 +198,17 @@ public class VerticalSlideColorPicker extends View {
 		this.onColorChangeListener = onColorChangeListener;
 	}
 
+	public int intialColor()
+    {
+        return selectedColor;
+    }
+
+
+
+
 	public interface OnColorChangeListener {
 
 		void onColorChange(int selectedColor);
+
 	}
 }
